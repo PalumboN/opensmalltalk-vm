@@ -5043,9 +5043,10 @@ InterpreterPrimitives >> sumSmallInteger: anInteger withSmallInteger: anotherInt
 	| a b result |
 	a := objectMemory integerValueOf: anInteger.
 	b := objectMemory integerValueOf: anotherInteger.
-
+	
 	result := a + b.
 
-	(objectMemory isIntegerValue: result) ifFalse: aBlock.
-	^ objectMemory integerObjectOf: result
+	^(objectMemory isIntegerValue: result) 
+		ifTrue: [ objectMemory integerObjectOf: result ]
+		ifFalse: aBlock
 ]

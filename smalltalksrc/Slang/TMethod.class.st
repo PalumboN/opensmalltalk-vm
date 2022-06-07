@@ -1254,6 +1254,7 @@ TMethod >> inlineCodeOrNilForStatement: aNode returningNodes: returningNodes in:
 	"If the given statement node can be inlined, answer the statements that replace it. Otherwise, answer nil."
 
 	| stmts |
+1halt.
 	(aNode isReturn
 	 and: [self inlineableSend: aNode expression in: aCodeGen]) ifTrue:
 		[stmts := self inlineSend: aNode expression
@@ -1486,6 +1487,7 @@ TMethod >> inlineSend: aSendNode directReturn: directReturn exitVar: exitVar in:
 			 (meth exitVar: exitVar label: exitLabel) "is label used?"
 				ifTrue: [ labels add: exitLabel ]
 				ifFalse: [ exitLabel := nil ]]].
+
 	(inlineStmts := OrderedCollection new: meth statements size + meth args size + 2)
 		add: (label := TLabeledCommentNode new setComment: 'begin ', sel);
 		addAll: (self argAssignmentsFor: meth send: aSendNode except: elidedArgs in: aCodeGen);
@@ -2797,6 +2799,7 @@ TMethod >> transformConditionalAssignment: node in: aCodeGen [
 	 to allow inlining of m1, m2, et al.  Otherwise answer nil."
 
 	| expr |
+	1halt.
 	^(node isAssignment
 	   and: [(expr := node expression) isSend
 	   and: [(#(ifTrue:ifFalse: ifFalse:ifTrue:) includes: expr selector)
@@ -2944,7 +2947,7 @@ TMethod >> tryToInlineMethodStatementsIn: aCodeGen statementListsInto: aBlock [
 		node isReturn ifTrue:
 			[returningNodes add: node expression.
 			 node expression isConditionalSend ifTrue:
-				[returningNodes addAll: (node expression args collect: [:stmtList| stmtList statements last])]]].
+				[returningNodes addAll: (node expression args select:[:arg| arg isStmtList ] thenCollect: [:stmtList| stmtList statements last])]]].
 	stmtLists := self statementsListsForInliningIn: aCodeGen.
 	stmtLists do:
 		[:stmtList|
@@ -2989,6 +2992,7 @@ TMethod >> tryToInlineMethodsIn: aCodeGen [
 			[^false].
 		 ^complete := true].
 
+1halt.
 	self ensureConditionalAssignmentsAreTransformedIn: aCodeGen.
 	didSomething := self tryToInlineMethodStatementsIn: aCodeGen statementListsInto: [:stmtLists| statementLists := stmtLists].
 	didSomething := (self tryToInlineMethodExpressionsIn: aCodeGen) or: [didSomething].

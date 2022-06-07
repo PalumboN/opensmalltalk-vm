@@ -100,6 +100,13 @@ TReturnNode >> isReturn [
 	^true
 ]
 
+{ #category : #testing }
+TReturnNode >> isSameAs: aTParseNode [
+
+	^ aTParseNode isReturn and: [ 
+		  expression isSameAs: aTParseNode expression ]
+]
+
 { #category : #enumerating }
 TReturnNode >> nodesDo: aBlock [
 	"Apply aBlock to all nodes in the receiver.

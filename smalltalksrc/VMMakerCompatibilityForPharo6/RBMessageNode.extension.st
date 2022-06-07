@@ -125,8 +125,10 @@ RBMessageNode >> asTranslatorNodeIn: aTMethod [
 	
 	(usedSelector == #ifTrue:ifFalse: and: [arguments first statements isEmpty]) ifTrue:
 		[usedSelector := #ifFalse:. args := {args last}].
-	(usedSelector == #ifTrue:ifFalse: and: [arguments last statements isEmpty]) ifTrue:
-		[usedSelector := #ifTrue:. args := {args first}].
+	(usedSelector == #ifTrue:ifFalse: and: [
+		arguments last isBlock
+			and: [ arguments last statements isEmpty]]) ifTrue: [
+				usedSelector := #ifTrue:. args := {args first}].
 	(usedSelector == #ifFalse:ifTrue: and: [arguments first statements isEmpty]) ifTrue:
 		[usedSelector := #ifTrue:. args := {args last}].
 	(usedSelector == #ifFalse:ifTrue: and: [arguments last statements isEmpty]) ifTrue:
