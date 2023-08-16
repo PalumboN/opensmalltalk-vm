@@ -1678,7 +1678,7 @@ StackInterpreterPrimitives >> primitiveGetVMParameter: index [
 			[71] ->	[^objectMemory integerObjectOf: (self cCode: 'VM_PROXY_MINOR' inSmalltalk: [self class vmProxyMinorVersion])].
 			[72] ->	[^objectMemory integerObjectOf: objectMemory statMarkUsecs + 500 // 1000].
 			[73] ->	[^objectMemory integerObjectOf: objectMemory statSweepUsecs + 500 // 1000].
-			[74] ->	[^objectMemory integerObjectOf: objectMemory statMaxAllocSegmentTime + 500 // 1000].
+			[74] ->	[^self getFailedMethodCompilationCount].
 			[75] ->	[^self getMethodCompilationCount]. 
 			[76] ->	[^self getMethodCompilationMSecs]. 
 			[77] ->	[^self getBlockCompilationCount]. 

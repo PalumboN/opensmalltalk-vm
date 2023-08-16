@@ -266,7 +266,8 @@ Class {
 		'statCompileFullBlockUsecs',
 		'statCompileMethodCount',
 		'statCompileMethodUsecs',
-		'jitCodeZoneWriteEnabled'
+		'jitCodeZoneWriteEnabled',
+		'statFailedCompileMethodCount'
 	],
 	#classVars : [
 		'AnnotationConstantNames',
@@ -4573,6 +4574,7 @@ Cogit >> cog: aMethodObj selector: aSelectorOop [
 		 self maybeFreeCounters.
 		 "Right now no errors should be reported, so nothing more to do."
 		 "self reportError: (self cCoerceSimple: cogMethod to: #sqInt)."
+		 statFailedCompileMethodCount := statFailedCompileMethodCount + 1.
 		 ^nil].
 		
 	statCompileMethodCount := statCompileMethodCount + 1.
@@ -8155,6 +8157,12 @@ Cogit >> getCStackPointer [
 		ifFalse: [(objectMemory longAt: coInterpreter inMemoryCStackPointerAddress) asVoidPointer]
 ]
 
+{ #category : #statistics }
+Cogit >> getFailedMethodCompilationCount [
+	<api>
+	^ objectMemory integerObjectOf: statFailedCompileMethodCount 
+]
+
 { #category : #'method map' }
 Cogit >> getIsObjectReference [
 	<cmacro>
@@ -8507,6 +8515,7 @@ Cogit >> initialize [
 											ifFalse: [CogMethodSurrogate64].	
 	statCompileFullBlockCount := 0.
 	statCompileFullBlockUsecs := 0.
+	statFailedCompileMethodCount := 0.
 	statCompileMethodCount := 0.
 	statCompileMethodUsecs := 0.
 	jitCodeZoneWriteEnabled := false.

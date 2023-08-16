@@ -3087,6 +3087,13 @@ CoInterpreter >> getDesiredCogCodeSize [
 	^objectMemory integerObjectOf: desiredCogCodeSize
 ]
 
+{ #category : #'internal interpreter access' }
+CoInterpreter >> getFailedMethodCompilationCount [
+
+	<doNotGenerate>
+	^ cogit getFailedMethodCompilationCount
+]
+
 { #category : #'object memory support' }
 CoInterpreter >> getGCMode [
 	^gcMode

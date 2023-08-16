@@ -19,6 +19,13 @@ SpurGenerationScavengerSimulator >> cameFrom: anObject [
 	cameFrom := anObject
 ]
 
+{ #category : #accessing }
+SpurGenerationScavengerSimulator >> coInterpreter [
+
+	<doNotGenerate>
+	^ coInterpreter 
+]
+
 { #category : #scavenger }
 SpurGenerationScavengerSimulator >> copyAndForward: survivor [
 	| relocatedOop |
