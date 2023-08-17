@@ -4579,6 +4579,9 @@ Cogit >> cog: aMethodObj selector: aSelectorOop [
 		
 	statCompileMethodCount := statCompileMethodCount + 1.
 	statCompileMethodUsecs := statCompileMethodUsecs + (coInterpreter ioUTCMicrosecondsNow - startTime).		
+	
+	
+	self printCogMethod: cogMethod.
 		
 	^cogMethod
 ]
