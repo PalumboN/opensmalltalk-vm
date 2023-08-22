@@ -3528,7 +3528,7 @@ CoInterpreter >> justActivateNewMethod: mustBeInterpreterFrame [
 	<var: #cogMethod type: #'CogMethod *'>
 	<var: #initialIP type: #usqInt>
 	<inline: true>
-	| methodHeader cogMethod numArgs numTemps rcvr methodSel |
+	| methodHeader cogMethod numArgs numTemps rcvr methodSel aClass name |
 	methodHeader := self rawHeaderOf: newMethod.
 	((self isCogMethodReference: methodHeader)) ifTrue: [ | theCogMethod |
 		theCogMethod := self cCoerceSimple: methodHeader to: #'CogMethod *'.
@@ -3540,10 +3540,17 @@ CoInterpreter >> justActivateNewMethod: mustBeInterpreterFrame [
 	numArgs := self argumentCountOfMethodHeader: methodHeader.
 	
 	self print: 'Activated method: '.
+	aClass := self safeMethodClassOf: newMethod.
+	aClass = objectMemory nilObject ifFalse: [ 
+		name := objectMemory fetchPointer: classNameIndex ofObject: aClass.
+		self longPrintOop: name.
+		self print: ' >> '.
+		 ].
 	methodSel := self findSelectorOfMethod: newMethod.
 	methodSel = objectMemory nilObject
 				ifTrue: [self print: '(nil)']
 				ifFalse: [self printStringOf: methodSel].
+	self cr.
 
 	rcvr := self stackValue: numArgs. "could new rcvr be set at point of send?"
 	self assert: (objectMemory isOopForwarded: rcvr) not.
