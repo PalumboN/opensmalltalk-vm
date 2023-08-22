@@ -3528,9 +3528,11 @@ CoInterpreter >> justActivateNewMethod: mustBeInterpreterFrame [
 	<var: #cogMethod type: #'CogMethod *'>
 	<var: #initialIP type: #usqInt>
 	<inline: true>
-	| methodHeader cogMethod numArgs numTemps rcvr methodSel aClass name |
+	| methodHeader cogMethod numArgs numTemps rcvr methodSel aClass name compiled |
+	compiled := false.
 	methodHeader := self rawHeaderOf: newMethod.
 	((self isCogMethodReference: methodHeader)) ifTrue: [ | theCogMethod |
+		compiled := true.
 		theCogMethod := self cCoerceSimple: methodHeader to: #'CogMethod *'.
 		methodHeader := theCogMethod methodHeader.
 		mustBeInterpreterFrame not ifTrue: [ 
@@ -3550,7 +3552,7 @@ CoInterpreter >> justActivateNewMethod: mustBeInterpreterFrame [
 	methodSel = objectMemory nilObject
 				ifTrue: [self print: '(nil)']
 				ifFalse: [self printStringOf: methodSel].
-	(self isCogMethodReference: methodHeader) ifTrue: [ self print: ' compiled' ].
+	compiled ifTrue: [ self print: ' (compiled)' ].
 	self cr.
 
 	rcvr := self stackValue: numArgs. "could new rcvr be set at point of send?"
