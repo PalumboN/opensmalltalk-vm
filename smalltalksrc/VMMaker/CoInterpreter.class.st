@@ -3543,13 +3543,14 @@ CoInterpreter >> justActivateNewMethod: mustBeInterpreterFrame [
 	aClass := self safeMethodClassOf: newMethod.
 	aClass = objectMemory nilObject ifFalse: [ 
 		name := objectMemory fetchPointer: classNameIndex ofObject: aClass.
-		self longPrintOop: name.
+		self printStringOf: name.
 		self print: ' >> '.
 		 ].
 	methodSel := self findSelectorOfMethod: newMethod.
 	methodSel = objectMemory nilObject
 				ifTrue: [self print: '(nil)']
 				ifFalse: [self printStringOf: methodSel].
+	(self isCogMethodReference: methodHeader) ifTrue: [ self print: ' compiled' ].
 	self cr.
 
 	rcvr := self stackValue: numArgs. "could new rcvr be set at point of send?"
