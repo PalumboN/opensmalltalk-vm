@@ -3538,6 +3538,9 @@ CoInterpreter >> justActivateNewMethod: mustBeInterpreterFrame [
 			cogMethod := theCogMethod ]].
 	numTemps := self temporaryCountOfMethodHeader: methodHeader.
 	numArgs := self argumentCountOfMethodHeader: methodHeader.
+	
+	self print: 'Activate method: '.
+	self printCogMethod: cogMethod.
 
 	rcvr := self stackValue: numArgs. "could new rcvr be set at point of send?"
 	self assert: (objectMemory isOopForwarded: rcvr) not.
