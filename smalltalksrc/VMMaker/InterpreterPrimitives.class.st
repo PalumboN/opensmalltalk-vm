@@ -978,6 +978,7 @@ InterpreterPrimitives >> primitiveAsFloat [
 InterpreterPrimitives >> primitiveAt [
 	<accessorDepth: 0>
 	<numberOfArguments: 1>
+	<specilizeFormat: 2 "arrayFormat">
 
 	self commonAt: false
 ]
