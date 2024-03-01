@@ -146,6 +146,12 @@ Spur64BitCoMemoryManager >> headerWhileForwardingOf: aCompiledMethodObjOop [
 	^self baseHeader: aCompiledMethodObjOop
 ]
 
+{ #category : #'cog jit support' }
+Spur64BitCoMemoryManager >> isArrayClass: classObj [
+	<api>
+	^(self instSpecOfClass: classObj) = self arrayFormat
+]
+
 { #category : #'class table' }
 Spur64BitCoMemoryManager >> isForwardedClassIndex: maybeClassIndex [
 	"A lenient tester of forwarded class indices for inline cache management in the Cogit."

@@ -67,6 +67,14 @@ Spur64BitMemoryManager >> addressAfter: objOop [
 	^objOop + self baseHeaderSize + (numSlots bitShift: self shiftForWord)
 ]
 
+{ #category : #'cog jit support' }
+Spur64BitMemoryManager >> arrayTag [
+
+	<api>
+	<cmacro>
+	^ 8
+]
+
 { #category : #'type-support' }
 Spur64BitMemoryManager >> asSignedPlatformInteger: anInteger [ 
 	

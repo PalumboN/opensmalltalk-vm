@@ -895,11 +895,7 @@ CogObjectRepresentationFor64BitSpur >> genJumpSmallIntegerInScratchReg: aRegiste
 { #category : #'primitive generators' }
 CogObjectRepresentationFor64BitSpur >> genPrimitiveAt [
 
-	| receiver format |
-	receiver := coInterpreter stackValue: 1.
-	format := objectMemory formatOf: receiver.
-	
-	format = 2 ifTrue: [ "Specialized compilation"
+	cogit receiverTags = objectMemory arrayTag ifTrue: [ "Specialized compilation"
 		^ self genPrimitiveAtArray ].
 
 	^ super genPrimitiveAt

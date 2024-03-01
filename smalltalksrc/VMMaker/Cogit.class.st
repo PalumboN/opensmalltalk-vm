@@ -10876,6 +10876,12 @@ Cogit >> promptForBreakPC [
 ]
 
 { #category : #'as yet unclassified' }
+Cogit >> receiverTags [
+
+	^ receiverTags
+]
+
+{ #category : #'as yet unclassified' }
 Cogit >> receiverTags: anInteger [ 
 	receiverTags := anInteger
 ]
