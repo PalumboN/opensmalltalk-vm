@@ -5561,6 +5561,7 @@ SpurMemoryManager >> formatMask [
 
 { #category : #'object access' }
 SpurMemoryManager >> formatOf: objOop [
+	<api>
 	"0 = 0 sized objects (UndefinedObject True False et al)
 	 1 = non-indexable objects with inst vars (Point et al)
 	 2 = indexable objects with no inst vars (Array et al)
