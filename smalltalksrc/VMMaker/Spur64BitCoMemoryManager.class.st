@@ -148,8 +148,9 @@ Spur64BitCoMemoryManager >> headerWhileForwardingOf: aCompiledMethodObjOop [
 
 { #category : #'cog jit support' }
 Spur64BitCoMemoryManager >> isArrayClass: classObj [
-	<api>
-	^(self instSpecOfClass: classObj) = self arrayFormat
+
+	<inline: true>
+	^ (self instSpecOfClass: classObj) = self arrayFormat
 ]
 
 { #category : #'class table' }
@@ -173,6 +174,13 @@ Spur64BitCoMemoryManager >> isForwardedClassIndex: maybeClassIndex [
 Spur64BitCoMemoryManager >> isImmediateClass: classObj [
 	<api>
 	^(self instSpecOfClass: classObj) = self instSpecForImmediateClasses
+]
+
+{ #category : #'cog jit support' }
+Spur64BitCoMemoryManager >> isMaybeContextClass: classObj [
+
+	<inline: true>
+	^ (self instSpecOfClass: classObj) = self maybeContextFormat
 ]
 
 { #category : #compaction }
@@ -224,18 +232,26 @@ Spur64BitCoMemoryManager >> objectBytesForSlots: numSlots [
 { #category : #'cog jit support' }
 Spur64BitCoMemoryManager >> receiverTagBitsForMethod: aMethodObj [
 	"Answer the tag bits for the receiver based on the method's methodClass, if any."
+
 	<api>
 	| methodClassOrNil |
 	methodClassOrNil := coInterpreter methodClassOf: aMethodObj.
-	(methodClassOrNil = nilObj or: [(self isImmediateClass: methodClassOrNil) not]) ifTrue:
-		[^0].
+	methodClassOrNil = nilObj ifTrue: [ ^ 0 ].
+
+	(self isArrayClass: methodClassOrNil) ifTrue: [ ^ self arrayTag ].
+	(self isMaybeContextClass: methodClassOrNil) ifTrue: [ ^ self maybeContextTag ].
+
+	(self isImmediateClass: methodClassOrNil) ifFalse: [ ^ 0 ].
+
 	"Method class is immediate"
-	methodClassOrNil = (self fetchPointer: self smallIntegerTag ofObject: classTableFirstPage) ifTrue:
-		[^self smallIntegerTag].
-	methodClassOrNil = (self fetchPointer: self characterTag ofObject: classTableFirstPage) ifTrue:
-		[^self characterTag].
+	methodClassOrNil = (self fetchPointer: self smallIntegerTag ofObject: classTableFirstPage) 
+		ifTrue: [ ^ self smallIntegerTag ].
+	
+	methodClassOrNil = (self fetchPointer: self characterTag ofObject: classTableFirstPage)
+		ifTrue: [ ^ self characterTag ].
+		
 	self assert: methodClassOrNil = (self fetchPointer: self smallFloatTag ofObject: classTableFirstPage).
-	^self smallFloatTag
+	^ self smallFloatTag
 ]
 
 { #category : #'trampoline support' }

@@ -9028,6 +9028,12 @@ SpurMemoryManager >> maxSmallInteger [
 	self subclassResponsibility
 ]
 
+{ #category : #'header formats' }
+SpurMemoryManager >> maybeContextFormat [
+	<api>
+	^3
+]
+
 { #category : #'object testing' }
 SpurMemoryManager >> maybeMethodClassOf: methodObj seemsToBeInstantiating: format [
 	"Answers if the code is installed in a class instantiating objects with the format. Used in primitive 

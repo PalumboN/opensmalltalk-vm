@@ -780,6 +780,14 @@ Spur64BitMemoryManager >> maxSmallInteger [
 	^16rFFFFFFFFFFFFFFF
 ]
 
+{ #category : #'cog jit support' }
+Spur64BitMemoryManager >> maybeContextTag [
+
+	<api>
+	<cmacro>
+	^ 16
+]
+
 { #category : #'interpreter access' }
 Spur64BitMemoryManager >> methodDictionaryHash: oop mask: mask [
 	<inline: true>
