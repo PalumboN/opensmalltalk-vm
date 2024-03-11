@@ -10096,6 +10096,12 @@ Cogit >> method: methodA hasSameCodeAs: methodB checkPenultimate: comparePenulti
 	^true
 ]
 
+{ #category : #accessing }
+Cogit >> methodClass [
+	<api>
+	^ coInterpreter methodClassOf: methodObj
+]
+
 { #category : #testing }
 Cogit >> methodFoundInvalidPostScan [
 	"This is a hook for subclasses to filter out methods they can't deal with."

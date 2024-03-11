@@ -237,10 +237,6 @@ Spur64BitCoMemoryManager >> receiverTagBitsForMethod: aMethodObj [
 	| methodClassOrNil |
 	methodClassOrNil := coInterpreter methodClassOf: aMethodObj.
 	methodClassOrNil = nilObj ifTrue: [ ^ 0 ].
-
-	(self isArrayClass: methodClassOrNil) ifTrue: [ ^ self arrayTag ].
-	(self isMaybeContextClass: methodClassOrNil) ifTrue: [ ^ self maybeContextTag ].
-
 	(self isImmediateClass: methodClassOrNil) ifFalse: [ ^ 0 ].
 
 	"Method class is immediate"
