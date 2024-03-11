@@ -980,8 +980,9 @@ InterpreterPrimitives >> primitiveAt [
 	<numberOfArguments: 1>
 "	<specilizeFormat: 2 ""Array"">"
 "	<specilizeFormat: 3 ""Context"">"
-	<specilizeFormat: 16 "ByteArray">
-
+"	<specilizeFormat: 16 ""ByteArray"">"
+	<specilizeFormat: 4 "WeakArray">
+	
 	self commonAt: false
 ]
 
