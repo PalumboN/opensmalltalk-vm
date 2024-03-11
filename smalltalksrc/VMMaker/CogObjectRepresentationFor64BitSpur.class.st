@@ -908,11 +908,11 @@ CogObjectRepresentationFor64BitSpur >> genPrimitiveAt [
 			^ self genPrimitiveAtMaybeContext ].
 
 		instSpec = 16 ifTrue: [ ^ self genPrimitiveAtByteArray16 ].
-		
-		instSpec = objectMemory weakArrayFormat ifTrue: [ ^ self genPrimitiveAtByteArray16 ].		
-		
-		].
 
+		instSpec = objectMemory weakArrayFormat ifTrue: [
+			^ self genPrimitiveAtWeakArray ] 
+
+	].
 
 	"Generic compilation (all cases)"
 	^ super genPrimitiveAt
