@@ -571,7 +571,10 @@ DruidJIT class >> primitiveTableArray [
 		  { 47. #gen_PrimitiveFloatEqual. 1 }.
 		  { 48. #gen_PrimitiveFloatNotEqual. 1 }.
 		  { 49. #gen_PrimitiveFloatMultiply. 1 }.
-		  { 60. #gen_PrimitiveAt. 1 }.
+
+		  { 60. #genPrimitiveAt. 1 }.
+		  { 61. #genPrimitiveAtPut. 2 }.
+
 		  { 62. #gen_PrimitiveSize. 0 }.
 		  { 70. #gen_PrimitiveNew. 0 }.
 		  { 71. #gen_PrimitiveNewWithArg. 1 }.
