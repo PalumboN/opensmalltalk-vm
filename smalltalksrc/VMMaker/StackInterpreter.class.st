@@ -2965,6 +2965,7 @@ StackInterpreter >> bytecodePrimGreaterThanSistaV1 [
 { #category : #'common selector sends' }
 StackInterpreter >> bytecodePrimIdenticalSistaV1 [
 
+	<nextSuperInstructions: #(194)>
 	| rcvr arg |
 	rcvr := self stackValue: 1.
 	arg := self stackValue: 0.
