@@ -1968,7 +1968,7 @@ StackInterpreter >> addNewMethodToCache: classObj [
 			Also, flushing is good when reprobe chains are getting full."
 	| probe hash primitiveIndex |
 	<inline: false>
-	hash := objectMemory methodCacheHashOf: messageSelector with: (objectMemory classTagForClass: classObj).  "shift drops low-order zeros from addresses"
+"	hash := objectMemory methodCacheHashOf: messageSelector with: (objectMemory classTagForClass: classObj).  ""shift drops low-order zeros from addresses""
 	(objectMemory isOopCompiledMethod: newMethod)
 		ifTrue:
 			[primitiveIndex := self primitiveIndexOf: newMethod.
@@ -1981,26 +1981,26 @@ StackInterpreter >> addNewMethodToCache: classObj [
 	0 to: CacheProbeMax-1 do:
 		[:p | probe := (hash >> p) bitAnd: MethodCacheMask.
 		(methodCache at: probe + MethodCacheSelector) = 0 ifTrue:
-			["Found an empty entry -- use it"
+			[""Found an empty entry -- use it""
 			methodCache at: probe + MethodCacheSelector put: messageSelector.
 			methodCache at: probe + MethodCacheClass put: (objectMemory classTagForClass: classObj).
 			methodCache at: probe + MethodCacheMethod put: newMethod.
 			methodCache at: probe + MethodCachePrimFunction put: (self cCoerce: primitiveFunctionPointer to: #'sqIntptr_t').
-			lastMethodCacheProbeWrite := probe. "this for primitiveExternalMethod"
+			lastMethodCacheProbeWrite := probe. ""this for primitiveExternalMethod""
 			^self]].
 
-	"OK, we failed to find an entry -- install at the first slot..."
-	probe := hash bitAnd: MethodCacheMask.  "first probe"
+	""OK, we failed to find an entry -- install at the first slot...""
+	probe := hash bitAnd: MethodCacheMask.  ""first probe""
 	methodCache at: probe + MethodCacheSelector put: messageSelector.
 	methodCache at: probe + MethodCacheClass put: (objectMemory classTagForClass: classObj).
 	methodCache at: probe + MethodCacheMethod put: newMethod.
 	methodCache at: probe + MethodCachePrimFunction put: (self cCoerce: primitiveFunctionPointer to: #'sqIntptr_t').
-	lastMethodCacheProbeWrite := probe. "this for primitiveExternalMethod"
+	lastMethodCacheProbeWrite := probe. ""this for primitiveExternalMethod""
 
-	"...and zap the following entries"
+	""...and zap the following entries""
 	1 to: CacheProbeMax-1 do:
 		[:p | probe := (hash >> p) bitAnd: MethodCacheMask.
-		methodCache at: probe + MethodCacheSelector put: 0]
+		methodCache at: probe + MethodCacheSelector put: 0]"
 ]
 
 { #category : 'plugin support' }
@@ -6438,7 +6438,7 @@ StackInterpreter >> followForwardedFrameContents: theFP stackPointer: theSP [
 
 { #category : 'object memory support' }
 StackInterpreter >> followForwardedMethodsInMethodCache [
-	0 to: MethodCacheSize - 1 by: MethodCacheEntrySize do:
+"	0 to: MethodCacheSize - 1 by: MethodCacheEntrySize do:
 		[:i | | c s m |
 		c := methodCache at: i + MethodCacheClass.
 		s := methodCache at: i + MethodCacheSelector.
@@ -6446,7 +6446,7 @@ StackInterpreter >> followForwardedMethodsInMethodCache [
 		(c ~= 0 and: [s ~= 0 and: [m ~= 0
 		 and: [objectMemory isOopForwarded: m]]]) ifTrue:
 			[m := objectMemory followForwarded: m.
-			 methodCache at: i + MethodCacheMethod put: m]]
+			 methodCache at: i + MethodCacheMethod put: m]]"
 ]
 
 { #category : 'object memory support' }
@@ -7734,23 +7734,23 @@ StackInterpreter >> inlineLookupInMethodCacheSel: selector classTag: classTag [
 
 	| hash probe |
 	<inline: true>
-	hash := objectMemory methodCacheHashOf: selector with: classTag.  "shift drops two low-order zeros from addresses"
+"	hash := objectMemory methodCacheHashOf: selector with: classTag.  ""shift drops two low-order zeros from addresses""
 
-	probe := hash bitAnd: MethodCacheMask.  "first probe"
+	probe := hash bitAnd: MethodCacheMask.  ""first probe""
 	(((methodCache at: probe + MethodCacheSelector) = selector) and:
 		 [(methodCache at: probe + MethodCacheClass) = classTag]) ifTrue:
 			[newMethod := methodCache at: probe + MethodCacheMethod.
 			primitiveFunctionPointer := self cCoerceSimple: (methodCache at: probe + MethodCachePrimFunction)
 											to: #'void (*)()'.
-			^true	"found entry in cache; done"].
+			^true	""found entry in cache; done""].
 
-	probe := (hash >> 1) bitAnd: MethodCacheMask.  "second probe"
+	probe := (hash >> 1) bitAnd: MethodCacheMask.  ""second probe""
 	(((methodCache at: probe + MethodCacheSelector) = selector) and:
 		 [(methodCache at: probe + MethodCacheClass) = classTag]) ifTrue:
 			[newMethod := methodCache at: probe + MethodCacheMethod.
 			primitiveFunctionPointer := self cCoerceSimple: (methodCache at: probe + MethodCachePrimFunction)
 											to: #'void (*)()'.
-			^true	"found entry in cache; done"].
+			^true	""found entry in cache; done""].
 
 	probe := (hash >> 2) bitAnd: MethodCacheMask.
 	(((methodCache at: probe + MethodCacheSelector) = selector) and:
@@ -7758,8 +7758,9 @@ StackInterpreter >> inlineLookupInMethodCacheSel: selector classTag: classTag [
 			[newMethod := methodCache at: probe + MethodCacheMethod.
 			primitiveFunctionPointer := self cCoerceSimple: (methodCache at: probe + MethodCachePrimFunction)
 											to: #'void (*)()'.
-			^true	"found entry in cache; done"].
-
+			^true	""found entry in cache; done""].
+"
+methodCache.
 	^false
 ]
 
@@ -10603,34 +10604,6 @@ StackInterpreter >> okayFields: oop [
 		i := i - 1.
 	].
 	^true
-]
-
-{ #category : 'debug support' }
-StackInterpreter >> okayInterpreterObjects [
-
-	| oopOrZero oop |
-	self okayFields: objectMemory nilObject.
-	self okayFields: objectMemory falseObject.
-	self okayFields: objectMemory trueObject.
-	self okayFields: objectMemory specialObjectsOop.
-	self okayFields: messageSelector.
-	self okayFields: newMethod.
-	self okayFields: lkupClass.
-	0 to: MethodCacheEntries - 1 by: MethodCacheEntrySize do: [ :i |
-		oopOrZero := methodCache at: i + MethodCacheSelector.
-		oopOrZero = 0 ifFalse: [
-			self okayFields: (methodCache at: i + MethodCacheSelector).
-			self okayFields: (methodCache at: i + MethodCacheClass).
-			self okayFields: (methodCache at: i + MethodCacheMethod).
-		].
-	].
-	1 to: objectMemory remapBufferCount do: [ :i |
-		oop := objectMemory remapBuffer at: i.
-		(objectMemory isImmediate: oop) ifFalse: [
-			self okayFields: oop.
-		].
-	].
-	self okayStackZone.
 ]
 
 { #category : 'simulation' }
