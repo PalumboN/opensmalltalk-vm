@@ -1968,7 +1968,7 @@ StackInterpreter >> addNewMethodToCache: classObj [
 			Also, flushing is good when reprobe chains are getting full."
 	| probe hash primitiveIndex |
 	<inline: false>
-"	hash := objectMemory methodCacheHashOf: messageSelector with: (objectMemory classTagForClass: classObj).  ""shift drops low-order zeros from addresses""
+	"hash := objectMemory methodCacheHashOf: messageSelector with: (objectMemory classTagForClass: classObj).  ""shift drops low-order zeros from addresses"""
 	(objectMemory isOopCompiledMethod: newMethod)
 		ifTrue:
 			[primitiveIndex := self primitiveIndexOf: newMethod.
@@ -1977,7 +1977,7 @@ StackInterpreter >> addNewMethodToCache: classObj [
 			[self assert: ((objectMemory isNonImmediate: newMethod)
 						  and: [objectMemory isForwarded: newMethod]) not.
 			 primitiveFunctionPointer := #primitiveInvokeObjectAsMethod].
-
+"
 	0 to: CacheProbeMax-1 do:
 		[:p | probe := (hash >> p) bitAnd: MethodCacheMask.
 		(methodCache at: probe + MethodCacheSelector) = 0 ifTrue:
@@ -7760,7 +7760,7 @@ StackInterpreter >> inlineLookupInMethodCacheSel: selector classTag: classTag [
 											to: #'void (*)()'.
 			^true	""found entry in cache; done""].
 "
-methodCache.
+
 	^false
 ]
 
